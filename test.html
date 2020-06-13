@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>La Habana Fitness</title>
+    </head>
+    <style>
+        #body {
+            width: 100%;
+        }
+        #buttons {
+            width: 15%;
+            float: left;
+        }
+        #test {
+            margin-left: 15%;
+            border: 1px solid;
+            height: 800px;
+        }
+    </style>
+    <body>
+        <script>
+
+
+
+
+
+            var testApiName = 'testAPIName';
+            var testInputs = {
+                user: 'manager',
+                content: 'FIRST_NAME',
+                table: 'CUSTOMER',
+            }
+
+
+
+
+
+
+
+
+
+            function test() {
+                var xhttp = new XMLHttpRequest();
+                xhttp.onreadystatechange = function() {
+                    console.log('im here');
+                    console.log('state: ' + this.readyState);
+                    console.log('status: ' + this.status);
+                    console.log(this.responseText);
+                    if (this.readyState == 4 && this.status == 200) {
+                        console.log('res: ' + this.responseText);
+                        document.getElementById('test').innerHTML = this.responseText;
+                    }
+                };
+                xhttp.open("POST", "http://localhost:8080", true);
+                xhttp.setRequestHeader("Content-Type", "application/json");
+                xhttp.send(JSON.stringify({apiName: testApiName, inputs: testInputs}));
+            }
+            function test1() {
+                var xhttp = new XMLHttpRequest();
+                xhttp.onreadystatechange = function() {
+                    console.log('im here');
+                    console.log('state: ' + this.readyState);
+                    console.log('status: ' + this.status);
+                    console.log(this.responseText);
+                    if (this.readyState == 4 && this.status == 200) {
+                        console.log('res: ' + this.responseText);
+                        document.getElementById('test').innerHTML = this.responseText;
+                    }
+                };
+                xhttp.open("POST", "http://localhost:8080", true);
+                xhttp.setRequestHeader("Content-Type", "application/json");
+                xhttp.send(JSON.stringify({apiName: "countStaff"}));
+            }
+            function test2() {
+                var xhttp = new XMLHttpRequest();
+                xhttp.onreadystatechange = function() {
+                    console.log('im here');
+                    console.log('state: ' + this.readyState);
+                    console.log('status: ' + this.status);
+                    console.log(this.responseText);
+                    if (this.readyState == 4 && this.status == 200) {
+                        console.log('res: ' + this.responseText);
+                        document.getElementById('test').innerHTML = this.responseText;
+                    }
+                };
+                xhttp.open("POST", "http://localhost:8080", true);
+                xhttp.setRequestHeader("Content-Type", "application/json");
+                xhttp.send(JSON.stringify({apiName: "selectAllFrom", inputs: {table: 'CUSTOMER'}}));
+            }
+        </script>
+        <h1>La Habana Fitness</h1>
+        <div id='body'>
+            <div id="buttons">
+                <div>
+                    my test <button type="button1" onclick="test()">test</button>
+                </div>
+                <br><br>
+                <div>
+                    count <button type="button1" onclick="test1()">count</button>
+                </div>
+                <div>
+                    list <button type="button2" onclick="test2()">list</button>
+                </div>
+            </div>
+            <div id="test"></div>
+        </div>
+    </body>
+</html>
