@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>La Habana Fitness</title>
+    </head>
+    <style>
+        #body {
+            width: 100%;
+        }
+        #buttons {
+            width: 40%;
+            float: left;
+        }
+        #queryOutput {
+            margin-left: 40%;
+            border: 1px solid;
+            height: 1000px;
+        }
+    </style>
+    <body onload="renderQueries()">
+        <script type="text/javascript" src="client/lambertQueries.js"></script>
+        <script type="text/javascript" src="client/ryanQueries.js"></script>
+        <script type="text/javascript" src="client/jQueries.js"></script>
+        <script>
+            function renderQueries() {
+                var allQueries = [...lambertQ, ...ryanQ, ...jQ];
+                var buttonsContainer = document.getElementById('buttons');
+                for (let q of allQueries) {
+                    var apiName = q['apiName'];
+                    var userInputs = q['userInputs'];
+                    var queryContainer = document.createElement("div");
+                    queryContainer.appendChild(document.createTextNode(q['text']));
+                    var button = document.createElement('button');
+                    button.id = apiName;
+                    button.addEventListener('click', buttonHandler(q));
+                    button.innerHTML = apiName;
+                    queryContainer.appendChild(button);
+                    if (userInputs) {
+                        for (let userInput of userInputs) {
+                            queryContainer.appendChild(document.createTextNode(userInput + ': '));
+                            var box = document.createElement('INPUT');
+                            box.setAttribute('type', 'text');
+                            box.id = apiName + '.' + userInput;
+                            queryContainer.appendChild(box);
+                        }
+                    }
+                    buttonsContainer.appendChild(queryContainer);
+                    buttonsContainer.appendChild(document.createElement('br'));
+                }
+            }
+
+            function buttonHandler(q) {
+                var requestInputs = {};
+                var apiName = q['apiName'];
+                var inputs = q['inputs'];
+                var userInputs = q['userInputs'];
+                if (inputs) {
+                    requestInputs = inputs;
+                }
+                return () => {
+                    if (userInputs) {
+                        for (let userInput of userInputs) {
+                            var field = document.getElementById(apiName + '.' + userInput).value;
+                            requestInputs[userInput] = field;
+                        }
+                    }
+                    var xhttp = new XMLHttpRequest();
+                    xhttp.onreadystatechange = function() {
+                        console.log(this.responseText);
+                        if (this.readyState == 4 && this.status == 200) {
+                            document.getElementById('queryOutput').innerHTML = this.responseText;
+                        }
+                    };
+                    xhttp.open("POST", "http://localhost:8080", true);
+                    xhttp.setRequestHeader("Content-Type", "application/json");
+                    xhttp.send(JSON.stringify({"apiName": apiName, "inputs": requestInputs}));
+                }
+            }
+        </script>
+        <h1>La Habana Fitness</h1>
+        <div id='body'>
+            <div id="buttons"></div>
+            <div id="queryOutput"></div>
+        </div>
+    </body>
+</html>
