@@ -16,6 +16,9 @@
             border: 1px solid;
             height: 1000px;
         }
+        td {
+            border: 1px solid;
+        }
     </style>
     <body onload="renderQueries()">
         <script type="text/javascript" src="client/lambertQueries.js"></script>
@@ -66,15 +69,38 @@
                     }
                     var xhttp = new XMLHttpRequest();
                     xhttp.onreadystatechange = function() {
-                        console.log(this.responseText);
                         if (this.readyState == 4 && this.status == 200) {
-                            document.getElementById('queryOutput').innerHTML = this.responseText;
+                            console.log(JSON.parse(this.responseText));
+                            showTable(this.responseText);
                         }
                     };
                     xhttp.open("POST", "http://localhost:8080", true);
                     xhttp.setRequestHeader("Content-Type", "application/json");
                     xhttp.send(JSON.stringify({"apiName": apiName, "inputs": requestInputs}));
                 }
+            }
+
+            function showTable(res) {
+                var resArr = JSON.parse(res);
+                var table = document.createElement('TABLE');
+                var titleRow = document.createElement('TR');
+                for (let col in resArr[0]) {
+                    var cell = document.createElement('TD');
+                    cell.appendChild(document.createTextNode(col));
+                    titleRow.appendChild(cell);
+                }
+                table.appendChild(titleRow);
+                for (let resRow of resArr) {
+                    var tableRow = document.createElement('TR');
+                    for (let resCell in resRow) {
+                        var tableCell = document.createElement('TD');
+                        tableCell.appendChild(document.createTextNode(resRow[resCell]));
+                        tableRow.appendChild(tableCell);
+                    }
+                    table.appendChild(tableRow);
+                }
+                document.getElementById('queryOutput').textContent = '';
+                document.getElementById('queryOutput').appendChild(table);
             }
         </script>
         <h1>La Habana Fitness</h1>

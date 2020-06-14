@@ -11,5 +11,9 @@ var jQ = [
         text: 'this is J test 2',
         apiName: "selectAllFrom",
         userInputs: ['table']
+    },
+    {
+        text: 'count staff',
+        apiName: 'countStaff',
     }
 ];
