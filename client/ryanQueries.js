@@ -1,12 +1,4 @@
 const ryanQ = [
-  {
-    text: 'this is Ryan test 1',
-    apiName: 'ryanApiName1',
-    inputs: {
-      content: '*',
-    },
-    userInputs: ['table'],
-  },
   // Get membership info
   {
     text: 'Get membership info',
