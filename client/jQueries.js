@@ -2,12 +2,14 @@ var jQ = [
     {
         text: 'Retrieve Membership ID from customer ID',
         apiName: "cus2mem",
-        userInputs: ['customerId']
+        userInputs: ['customerId'],
+        categories: ['insert', 'delete', 'update', 'selection', 'projection', 'join', 'aggregation', 'nested_aggregation', 'division']
     },
     {
         text: 'Retrieve monthly salary from staff ID',
         apiName: "staff2salary",
-        userInputs: ['staffId']
+        userInputs: ['staffId'],
+        categories: ['insert', 'projection']
     },
     {
         text: 'List all customer ID',
