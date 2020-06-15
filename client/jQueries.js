@@ -35,6 +35,19 @@ var jQ = [
         userInputs: ['table']
     },
     {
+        text: 'Insert into',
+        apiName: 'insert',
+        userInputs: ['table', 'value']
+    },
+    {
+        text: 'Delete from',
+        apiName: 'deleteFromWhere',
+        userInputs: ['table', 'condition']
+    },
+    /*
+    ====================== Retrieve all tables ======================
+    */
+    {
         text: 'Retrieve all from table AREA',
         apiName: "projectFrom",
         inputs: {

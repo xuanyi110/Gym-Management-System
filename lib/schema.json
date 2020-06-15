@@ -1,0 +1,5 @@
+{
+    "COURSE": ["ID", "TITLE", "DESCRIPTION"],
+    "CUSTOMER": ["ID", "FIRST_NAME", "LAST_NAME", "PASSWORD", "ADDR", "DOB", "GENDER", "PHONE", "EMAIL", "POSTAL_CODE"],
+    "AREA": ["ID", "NAME", "AREA_SIZE"]
+}

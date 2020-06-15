@@ -28,8 +28,53 @@
         <script type="text/javascript" src="client/ryanQueries.js"></script>
         <script type="text/javascript" src="client/jQueries.js"></script>
         <script>
+            function extraQueries() {
+                var queries = [];
+                var xhttp = new XMLHttpRequest();
+                xhttp.onload = function() {
+                    if (this.status == 200) {
+                        var schema = JSON.parse(this.responseText);
+                        for (let table in schema) {
+                            var tableObj = {
+                                text: `Insert new tuple into table ${table}`,
+                                apiName: `insertInto${table}`,
+                                userInputs: schema[table]
+                            };
+                            queries.push(tableObj);
+                        }
+                        for (let table in schema) {
+                            var tableObj = {
+                                text: `Update tuple in table ${table}`,
+                                apiName: `update${table}`,
+                                userInputs: [...schema[table], 'condition']
+                            };
+                            queries.push(tableObj);
+                        }
+                        for (let table in schema) {
+                            var tableObj = {
+                                text: `Delete tuple from table ${table}`,
+                                apiName: `deleteFromWhere`,
+                                inputs: {
+                                    'table': table
+                                },
+                                userInputs: ['condition']
+                            };
+                            queries.push(tableObj);
+                        }
+                    }
+                };
+                xhttp.open("GET", "http://localhost:8080", false);
+                try {
+                    xhttp.send();
+                }
+                catch(err) {
+                    console.log('Server down.');
+                }
+                return queries;
+            }
+
             function renderQueries() {
-                var allQueries = [...lambertQ, ...ryanQ, ...jQ];
+                var allQueries = [...lambertQ, ...ryanQ, ...jQ, ...extraQueries()];
                 var buttonsContainer = document.getElementById('buttons');
                 for (let q of allQueries) {
                     var apiName = q['apiName'];
@@ -39,7 +84,7 @@
                     var button = document.createElement('button');
                     button.id = apiName;
                     button.addEventListener('click', buttonHandler(q));
-                    button.innerHTML = 'Get';
+                    button.innerHTML = 'Run';
                     queryContainer.appendChild(button);
                     if (userInputs) {
                         queryContainer.appendChild(document.createElement('br'));
@@ -47,7 +92,7 @@
                             queryContainer.appendChild(document.createTextNode(userInput + ': '));
                             var box = document.createElement('INPUT');
                             box.setAttribute('type', 'text');
-                            box.id = apiName + '.' + userInput;
+                            box.id = q['text'].replace(/\s/g, '_') + '.' + userInput;
                             queryContainer.appendChild(box);
                             queryContainer.appendChild(document.createElement('br'));
                         }
@@ -68,7 +113,7 @@
                 return () => {
                     if (userInputs) {
                         for (let userInput of userInputs) {
-                            var field = document.getElementById(apiName + '.' + userInput).value;
+                            var field = document.getElementById(q['text'].replace(/\s/g, '_') + '.' + userInput).value;
                             requestInputs[userInput] = field;
                         }
                     }
