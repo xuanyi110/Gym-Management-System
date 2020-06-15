@@ -9,12 +9,15 @@
         }
         #buttons {
             width: 40%;
+            height: 600px;
             float: left;
+            overflow: scroll;
         }
         #queryOutput {
             margin-left: 40%;
             border: 1px solid;
-            height: 1000px;
+            height: 600px;
+            overflow: scroll;
         }
         td {
             border: 1px solid;
@@ -84,6 +87,10 @@
 
             function showTable(res) {
                 var resArr = JSON.parse(res);
+                if (resArr.length === 0) {
+                    document.getElementById('queryOutput').textContent = 'No result';
+                    return;
+                }
                 var table = document.createElement('TABLE');
                 var titleRow = document.createElement('TR');
                 for (let col in resArr[0]) {
