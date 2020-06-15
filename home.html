@@ -35,23 +35,28 @@
                     if (this.status == 200) {
                         var schema = JSON.parse(this.responseText);
                         for (let table in schema) {
-                            var tableObj = {
+                            var viewObj = {
+                                text: `Retrieve all from table ${table}`,
+                                apiName: `projectFrom`,
+                                inputs: {
+                                    attr: '*',
+                                    'table': table
+                                }
+                            };
+                            queries.push(viewObj);
+                            var insertObj = {
                                 text: `Insert new tuple into table ${table}`,
                                 apiName: `insertInto${table}`,
                                 userInputs: schema[table]
                             };
-                            queries.push(tableObj);
-                        }
-                        for (let table in schema) {
-                            var tableObj = {
+                            queries.push(insertObj);
+                            var updateObj = {
                                 text: `Update tuple in table ${table}`,
                                 apiName: `update${table}`,
                                 userInputs: [...schema[table], 'condition']
                             };
-                            queries.push(tableObj);
-                        }
-                        for (let table in schema) {
-                            var tableObj = {
+                            queries.push(updateObj);
+                            var deleteObj = {
                                 text: `Delete tuple from table ${table}`,
                                 apiName: `deleteFromWhere`,
                                 inputs: {
@@ -59,7 +64,7 @@
                                 },
                                 userInputs: ['condition']
                             };
-                            queries.push(tableObj);
+                            queries.push(deleteObj);
                         }
                     }
                 };
@@ -120,8 +125,14 @@
                     var xhttp = new XMLHttpRequest();
                     xhttp.onreadystatechange = function() {
                         if (this.readyState == 4 && this.status == 200) {
-                            console.log(JSON.parse(this.responseText));
-                            showTable(this.responseText);
+                            try {
+                                console.log(JSON.parse(this.responseText));
+                                showTable(this.responseText);
+                            } catch {
+                                document.getElementById('queryOutput').textContent = 'Parsing error:\n' + this.responseText;
+                            }
+                        } else {
+                            document.getElementById('queryOutput').textContent = 'Bad status:\n' + this.responseText;
                         }
                     };
                     xhttp.open("POST", "http://localhost:8080", true);
@@ -132,6 +143,14 @@
 
             function showTable(res) {
                 var resArr = JSON.parse(res);
+                if (!Array.isArray(resArr)) {
+                    if (resArr['sqlMessage']) {
+                        document.getElementById('queryOutput').textContent = 'SQL msg:\n' + resArr['sqlMessage'];
+                    } else {
+                        document.getElementById('queryOutput').textContent = 'Done.';
+                    }
+                    return;
+                }
                 if (resArr.length === 0) {
                     document.getElementById('queryOutput').textContent = 'No result';
                     return;
