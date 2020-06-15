@@ -32,23 +32,25 @@
                     var apiName = q['apiName'];
                     var userInputs = q['userInputs'];
                     var queryContainer = document.createElement("div");
-                    queryContainer.appendChild(document.createTextNode(q['text']));
+                    queryContainer.appendChild(document.createTextNode(q['text'] + ': '));
                     var button = document.createElement('button');
                     button.id = apiName;
                     button.addEventListener('click', buttonHandler(q));
-                    button.innerHTML = apiName;
+                    button.innerHTML = 'Get';
                     queryContainer.appendChild(button);
                     if (userInputs) {
+                        queryContainer.appendChild(document.createElement('br'));
                         for (let userInput of userInputs) {
                             queryContainer.appendChild(document.createTextNode(userInput + ': '));
                             var box = document.createElement('INPUT');
                             box.setAttribute('type', 'text');
                             box.id = apiName + '.' + userInput;
                             queryContainer.appendChild(box);
+                            queryContainer.appendChild(document.createElement('br'));
                         }
                     }
                     buttonsContainer.appendChild(queryContainer);
-                    buttonsContainer.appendChild(document.createElement('br'));
+                    buttonsContainer.appendChild(document.createElement('hr'));
                 }
             }
 

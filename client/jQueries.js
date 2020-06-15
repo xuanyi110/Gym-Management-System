@@ -1,15 +1,12 @@
 var jQ = [
     {
-        text: 'this is J test 1',
-        apiName: "selectFromCustomer",
-        inputs: {
-            table: "CUSTOMER",
-        },
-        userInputs: ['attr', 'input1', 'input2']
+        text: 'Retrieve Membership ID from Customer ID',
+        apiName: "cus2mem",
+        userInputs: ['customerId']
     },
     {
-        text: 'this is J test 2',
-        apiName: "selectAllFrom",
+        text: 'Retrieve all from',
+        apiName: "showAll",
         userInputs: ['table']
     },
     {
