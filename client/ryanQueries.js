@@ -1,17 +1,17 @@
 const ryanQ = [
   // Get membership info
   {
-    text: 'Get membership info',
+    text: 'Get all the membership info',
     apiName: 'getMembershipInfo',
   },
   // Get all the adult customers
   {
-    text: 'Get adult customers',
+    text: 'Get all the adult customers',
     apiName: 'getAdults',
   },
   // Get cleaning history(area) of a certain area
   {
-    text: 'Get cleaning history',
+    text: 'Get cleaning history by area ID',
     apiName: 'getCleanHistory',
     inputs: {
       content: ['areaID'],
@@ -25,7 +25,7 @@ const ryanQ = [
   },
   // Get courses in a certain area
   {
-    text: 'Get courses in area',
+    text: 'Get courses in area by area ID',
     apiName: 'getCoursesInArea',
     inputs: {
       content: ['areaID'],
@@ -43,7 +43,7 @@ const ryanQ = [
   },
   // Get customers who registered the course session
   {
-    text: 'Get customers registered in session',
+    text: 'Get customers registered in session by customer id',
     apiName: 'getSessionCustomers',
     inputs: {
       content: ['session_number'],
@@ -52,7 +52,7 @@ const ryanQ = [
   },
   // Get membership of a customer
   {
-    text: 'Get membership of a customer',
+    text: 'Get membership of a customer by customer id',
     apiName: 'getCustMembership',
     inputs: {
       content: ['cust_id'],
@@ -61,7 +61,7 @@ const ryanQ = [
   },
   // Get coach info of a specific customer
   {
-    text: 'Get coach of a customer',
+    text: 'Get coach of a customer by customer id',
     apiName: 'getCustCoaches',
     inputs: {
       content: ['cust_id'],
