@@ -3,13 +3,13 @@ body {
   opacity: 95%;
 }
 h1 {
-  color: rgb(226, 223, 247);
+  color: rgb(249, 249, 250);
   text-align: center;
-  font-size: 40px;
+  font-size: 50px;
 }
 #main_content {
   width: 100%;
-  background-color: antiquewhite;
+  background-color: rgb(247, 234, 217);
 }
 #panel {
   width: 40%;
