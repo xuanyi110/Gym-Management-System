@@ -1,12 +1,12 @@
 var jQ = [
     {
-        text: 'Retrieve Membership ID from customer ID',
+        text: 'Retrieve Membership ID from customer ID (e.g. 1/2/3)',
         apiName: "cus2mem",
         userInputs: ['customerId'],
         categories: ['selection', 'projection']
     },
     {
-        text: 'Retrieve monthly salary from staff ID',
+        text: 'Retrieve monthly salary from staff ID (e.g. C1/J2/M3)',
         apiName: "staff2salary",
         userInputs: ['staffId'],
         categories: ['selection', 'projection']
@@ -21,7 +21,7 @@ var jQ = [
         categories: ['selection', 'projection']
     },
     {
-        text: 'Retrieve number of personal trainees from coach ID',
+        text: 'Retrieve number of personal trainees from coach ID (e.g. C1/C2/C3)',
         apiName: "coach2trainee",
         userInputs: ['coachId'],
         categories: ['selection', 'projection']
@@ -32,7 +32,7 @@ var jQ = [
         categories: ['selection', 'projection', 'join', 'division']
     },
     {
-        text: 'Count all from',
+        text: 'Count all from (e.g. CUSTOMER/STAFF)',
         apiName: 'projectFrom',
         inputs: {
             attr: 'COUNT(*) number_of_tuples'
