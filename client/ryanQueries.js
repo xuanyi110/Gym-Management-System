@@ -17,7 +17,7 @@ const ryanQ = [
   },
   // Get courses in a certain area
   {
-    text: 'Get courses in area by area ID',
+    text: 'Get courses in area by area ID (Valid input: 1; 2; 3)',
     apiName: 'getCoursesInArea',
     inputs: {
       content: ['areaID'],
@@ -27,7 +27,7 @@ const ryanQ = [
   },
   // Get courses registered by customer
   {
-    text: 'Get courses registered by customer',
+    text: 'Get courses registered by customer (Valid input: 1; 2; 3; 4)',
     apiName: 'getCustCourses',
     inputs: {
       content: ['cust_id'],
@@ -37,7 +37,8 @@ const ryanQ = [
   },
   // Get customers who registered the course session
   {
-    text: 'Get customers registered in session by customer id',
+    text:
+      'Get customers registered in session by customer id (Valid input: 1; 2; 3; 4)',
     apiName: 'getSessionCustomers',
     inputs: {
       content: ['session_number'],
@@ -47,7 +48,8 @@ const ryanQ = [
   },
   // Get membership of a customer
   {
-    text: 'Get membership of a customer by customer id',
+    text:
+      'Get membership of a customer by customer id (Valid input: 1; 2; 3; 4)',
     apiName: 'getCustMembership',
     inputs: {
       content: ['cust_id'],
@@ -57,7 +59,7 @@ const ryanQ = [
   },
   // Get coach info of a specific customer
   {
-    text: 'Get coach of a customer by customer id',
+    text: 'Get coach of a customer by customer id (Valid input: 1; 2; 3; 4)',
     apiName: 'getCustCoaches',
     inputs: {
       content: ['cust_id'],
@@ -67,7 +69,8 @@ const ryanQ = [
   },
   // Get the number of tuples for each table
   {
-    text: 'Count number of tuples based on table name',
+    text:
+      'Count number of tuples based on table name (Valid input: staff; customer; course)',
     apiName: 'getNumTuples',
     categories: ['selection', 'aggregation'],
     inputs: {
@@ -77,7 +80,8 @@ const ryanQ = [
   },
   // Calculate the average salary of staff based on gender
   {
-    text: 'Calculate the average salary of staff based on gender',
+    text:
+      'Calculate the average salary of staff based on gender (Valid input: M; F)',
     apiName: 'getAvgSalaryByGender',
     categories: ['selection', 'nested_aggregation'],
     inputs: {
