@@ -17,7 +17,7 @@ const ryanQ = [
   },
   // Get courses in a certain area
   {
-    text: 'Get courses in area by area ID (Valid input: 1; 2; 3)',
+    text: 'Get courses in area by area ID (Valid input: 2)',
     apiName: 'getCoursesInArea',
     inputs: {
       content: ['areaID'],
