@@ -7,10 +7,17 @@
         #body {
             width: 100%;
         }
-        #buttons {
+        #panel {
             width: 40%;
             height: 600px;
             float: left;
+        }
+        #filters {
+            width: 100%;
+        }
+        #buttons {
+            width: 100%;
+            height: 90%;
             overflow: scroll;
         }
         #queryOutput {
@@ -54,7 +61,7 @@
             background-color: rgb(240, 129, 188);
         }
     </style>
-    <body onload="renderQueries()">
+    <body onload="renderFilters()">
         <script type="text/javascript" src="client/lambertQueries.js"></script>
         <script type="text/javascript" src="client/ryanQueries.js"></script>
         <script type="text/javascript" src="client/jQueries.js"></script>
@@ -113,14 +120,59 @@
                 return queries;
             }
 
+            function renderFilters() {
+                renderQueries();
+                var filtersContainer = document.getElementById('filters');
+                var title = document.createElement('h3');
+                title.innerText = 'Filters';
+                filtersContainer.appendChild(title);
+                filtersContainer.appendChild(document.createTextNode('Label: '));
+                var labelSelector = document.createElement('select');
+                labelSelector.id = 'labelSelector';
+                var option = document.createElement('option');
+                option.innerText = 'All';
+                option.setAttribute('value', '');
+                labelSelector.appendChild(option);
+                for (let label of ['insert', 'delete', 'update', 'selection', 'projection', 'join', 'aggregation', 'nested_aggregation', 'division']) {
+                    var option = document.createElement('option');
+                    option.innerText = label;
+                    option.setAttribute('value', label);
+                    labelSelector.appendChild(option);
+                }
+                filtersContainer.appendChild(labelSelector);
+                var labelSelectorButton = document.createElement('button');
+                labelSelectorButton.addEventListener('click', () => {
+                    renderQueries();
+                    var filterValue = document.getElementById('labelSelector').value;
+                    var buttonsContainer = document.getElementById('buttons');
+                    var newList = [];
+                    for (let queryContainer of buttonsContainer.childNodes) {
+                        if (queryContainer.id.includes(filterValue)) {
+                            newList.push(queryContainer);
+                        }
+                    }
+                    buttonsContainer.innerHTML = '';
+                    for (let queryContainer of newList) {
+                        buttonsContainer.appendChild(queryContainer);
+                    }
+                });
+                labelSelectorButton.innerHTML = 'filter';
+                filtersContainer.appendChild(labelSelectorButton);
+                var hr = document.createElement('hr');
+                hr.setAttribute('style', "height:4px;background-color:purple")
+                filtersContainer.appendChild(hr);
+            }
+
             function renderQueries() {
                 var allQueries = [...lambertQ, ...ryanQ, ...jQ, ...extraQueries()];
                 var buttonsContainer = document.getElementById('buttons');
+                buttonsContainer.innerHTML = '';
                 for (let q of allQueries) {
                     var apiName = q['apiName'];
                     var userInputs = q['userInputs'];
                     var categories = q['categories'];
                     var queryContainer = document.createElement("div");
+                    queryContainer.id = String(categories);
                     if (categories) {
                         for (let category of categories) {
                             var cgrLabel = document.createElement("div");
@@ -224,7 +276,10 @@
         </script>
         <h1>La Habana Fitness</h1>
         <div id='body'>
-            <div id="buttons"></div>
+            <div id="panel">
+                <div id="filters"></div>
+                <div id="buttons"></div>
+            </div>
             <div id="queryOutput"></div>
         </div>
     </body>
