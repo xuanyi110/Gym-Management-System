@@ -22,6 +22,37 @@
         td {
             border: 1px solid;
         }
+        .label {
+            display: inline-block;
+            margin: 2px;
+        }
+        .insert {
+            background-color: aqua;
+        }
+        .delete {
+            background-color: aquamarine;
+        }
+        .update {
+            background-color: blanchedalmond;
+        }
+        .selection {
+            background-color: rgb(0, 102, 255);
+        }
+        .projection {
+            background-color: rgb(175, 151, 243);
+        }
+        .join {
+            background-color: rgb(151, 105, 236);
+        }
+        .aggregation {
+            background-color: rgb(112, 238, 169);
+        }
+        .nested_aggregation {
+            background-color: rgb(241, 239, 112);
+        }
+        .division {
+            background-color: rgb(240, 129, 188);
+        }
     </style>
     <body onload="renderQueries()">
         <script type="text/javascript" src="client/lambertQueries.js"></script>
@@ -84,7 +115,18 @@
                 for (let q of allQueries) {
                     var apiName = q['apiName'];
                     var userInputs = q['userInputs'];
+                    var categories = q['categories'];
                     var queryContainer = document.createElement("div");
+                    if (categories) {
+                        for (let category of categories) {
+                            var cgrLabel = document.createElement("div");
+                            cgrLabel.classList.add(category);
+                            cgrLabel.classList.add('label');
+                            cgrLabel.innerText = category + ' ';
+                            queryContainer.appendChild(cgrLabel);
+                        }
+                    }
+                    queryContainer.appendChild(document.createElement('br'));
                     queryContainer.appendChild(document.createTextNode(q['text'] + ': '));
                     var button = document.createElement('button');
                     button.id = apiName;
