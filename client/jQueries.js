@@ -3,13 +3,13 @@ var jQ = [
         text: 'Retrieve Membership ID from customer ID',
         apiName: "cus2mem",
         userInputs: ['customerId'],
-        categories: ['insert', 'delete', 'update', 'selection', 'projection', 'join', 'aggregation', 'nested_aggregation', 'division']
+        categories: ['selection', 'projection']
     },
     {
         text: 'Retrieve monthly salary from staff ID',
         apiName: "staff2salary",
         userInputs: ['staffId'],
-        categories: ['insert', 'projection']
+        categories: ['selection', 'projection']
     },
     {
         text: 'List all customer ID',
@@ -17,16 +17,19 @@ var jQ = [
         inputs: {
             attr: 'ID',
             table: 'CUSTOMER'
-        }
+        },
+        categories: ['selection', 'projection']
     },
     {
         text: 'Retrieve number of personal trainees from coach ID',
         apiName: "coach2trainee",
-        userInputs: ['coachId']
+        userInputs: ['coachId'],
+        categories: ['selection', 'projection']
     },
     {
         text: 'Who have participated in all training courses',
-        apiName: "whoAttendedAll"
+        apiName: "whoAttendedAll",
+        categories: ['selection', 'projection', 'join', 'division']
     },
     {
         text: 'Count all from',
@@ -34,6 +37,7 @@ var jQ = [
         inputs: {
             attr: 'COUNT(*) number_of_tuples'
         },
-        userInputs: ['table']
+        userInputs: ['table'],
+        categories: ['selection', 'projection']
     },
 ];
