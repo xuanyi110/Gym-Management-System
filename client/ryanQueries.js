@@ -1,16 +1,4 @@
 const ryanQ = [
-  // Get membership info
-  {
-    text: 'Get all the membership info',
-    apiName: 'getMembershipInfo',
-    categories: ['projection'],
-  },
-  // Get all the adult customers
-  {
-    text: 'Get all the adult customers',
-    apiName: 'getAdults',
-    categories: ['selection', 'projection', 'join'],
-  },
   // Get cleaning history(area) of a certain area
   {
     text: 'Get cleaning history by area ID',
@@ -76,5 +64,15 @@ const ryanQ = [
     },
     userInputs: ['cust_id'],
     categories: ['selection', 'projection', 'join'],
+  },
+  // Get the number of tuples for each table
+  {
+    text: 'Count number of tuples based on table name',
+    apiName: 'getNumTuples',
+    categories: ['selection', 'aggregation'],
+    inputs: {
+      content: ['table_name'],
+    },
+    userInputs: ['table_name'],
   },
 ];
