@@ -223,18 +223,28 @@
 
       function showTable(res) {
         var resArr = JSON.parse(res);
+        var queryRequestContainer = document.createElement('p');
         if (!Array.isArray(resArr)) {
-          if (resArr['sqlMessage']) {
-            document.getElementById('queryOutput').textContent =
-              'SQL msg:\n' + resArr['sqlMessage'];
-          } else {
-            document.getElementById('queryOutput').textContent = 'Done.';
-          }
-          return;
+            var msgContainer = document.createElement('p');
+            queryRequestContainer.innerText = 'Query: ' + resArr['queryRequest'];
+            if (resArr['sqlMessage']) {
+                msgContainer.innerText = 'SQL msg:\n' + resArr['sqlMessage'];
+            } else {
+                msgContainer.innerText = 'Done.';
+            }
+            document.getElementById('queryOutput').textContent = '';
+            document.getElementById('queryOutput').appendChild(queryRequestContainer);
+            document.getElementById('queryOutput').appendChild(msgContainer);
+            return;
         }
+        document.getElementById('queryOutput').textContent = '';
+        queryRequestContainer.innerText = 'Query: ' + resArr.pop();
+        document.getElementById('queryOutput').appendChild(queryRequestContainer);
         if (resArr.length === 0) {
-          document.getElementById('queryOutput').textContent = 'No result';
-          return;
+            var msgContainer = document.createElement('p');
+            msgContainer.innerText = 'No result';
+            document.getElementById('queryOutput').appendChild(msgContainer);
+            return;
         }
         var table = document.createElement('TABLE');
         var titleRow = document.createElement('TR');
@@ -253,7 +263,6 @@
           }
           table.appendChild(tableRow);
         }
-        document.getElementById('queryOutput').textContent = '';
         document.getElementById('queryOutput').appendChild(table);
       }
     </script>
