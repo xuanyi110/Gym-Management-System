@@ -32,4 +32,4 @@ The project uses MySQL as the DBMS and NodeJS as the backend; in the same time, 
 
 
 ## Copyright ©
-Project copyright belongs to the original authors: Lambert Ji, Jay Fu, and Ryan Shang.
+Project copyright belongs to the original authors: [xuanyi110](https://github.com/xuanyi110), [tszngai](https://github.com/tszngai), and [RyanShang627](https://github.com/RyanShang627).
