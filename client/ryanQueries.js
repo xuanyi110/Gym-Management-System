@@ -1,14 +1,4 @@
 const ryanQ = [
-  // Get membership info
-  {
-    text: 'Get all the membership info',
-    apiName: 'getMembershipInfo',
-  },
-  // Get all the adult customers
-  {
-    text: 'Get all the adult customers',
-    apiName: 'getAdults',
-  },
   // Get cleaning history(area) of a certain area
   {
     text: 'Get cleaning history by area ID',
@@ -16,12 +6,14 @@ const ryanQ = [
     inputs: {
       content: ['areaID'],
     },
+    categories: ['selection', 'projection', 'join'],
     userInputs: ['areaID'],
   },
   // Get all the reserved lockers
   {
     text: 'Get all reserved lockers',
     apiName: 'getReservedLockers',
+    categories: ['selection', 'projection'],
   },
   // Get courses in a certain area
   {
@@ -31,6 +23,7 @@ const ryanQ = [
       content: ['areaID'],
     },
     userInputs: ['areaID'],
+    categories: ['selection', 'projection', 'join'],
   },
   // Get courses registered by customer
   {
@@ -40,6 +33,7 @@ const ryanQ = [
       content: ['cust_id'],
     },
     userInputs: ['cust_id'],
+    categories: ['selection', 'projection', 'join'],
   },
   // Get customers who registered the course session
   {
@@ -49,6 +43,7 @@ const ryanQ = [
       content: ['session_number'],
     },
     userInputs: ['session_number'],
+    categories: ['selection', 'projection', 'join'],
   },
   // Get membership of a customer
   {
@@ -58,6 +53,7 @@ const ryanQ = [
       content: ['cust_id'],
     },
     userInputs: ['cust_id'],
+    categories: ['selection', 'projection', 'join'],
   },
   // Get coach info of a specific customer
   {
@@ -67,5 +63,16 @@ const ryanQ = [
       content: ['cust_id'],
     },
     userInputs: ['cust_id'],
+    categories: ['selection', 'projection', 'join'],
+  },
+  // Get the number of tuples for each table
+  {
+    text: 'Count number of tuples based on table name',
+    apiName: 'getNumTuples',
+    categories: ['selection', 'aggregation'],
+    inputs: {
+      content: ['table_name'],
+    },
+    userInputs: ['table_name'],
   },
 ];
