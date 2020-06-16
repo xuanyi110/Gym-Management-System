@@ -151,6 +151,7 @@
                     var buttonsContainer = document.getElementById('buttons');
                     var newList = [];
                     for (let queryContainer of buttonsContainer.childNodes) {
+                        if (queryContainer.tagName === 'HR') continue;
                         if (queryContainer.id.includes(filterValue)) {
                             newList.push(queryContainer);
                         }
@@ -158,6 +159,7 @@
                     buttonsContainer.innerHTML = '';
                     for (let queryContainer of newList) {
                         buttonsContainer.appendChild(queryContainer);
+                        buttonsContainer.appendChild(document.createElement('hr'));
                     }
                 });
                 labelSelectorButton.innerHTML = 'filter';
