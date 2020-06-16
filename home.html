@@ -1,292 +1,261 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <title>La Habana Fitness</title>
-    </head>
-    <style>
-        #body {
-            width: 100%;
-        }
-        #panel {
-            width: 40%;
-            height: 625px;
-            float: left;
-        }
-        h3 {
-            margin-top: 0px;
-        }
-        #filters {
-            width: 100%;
-            height: 85px;
-        }
-        #buttons {
-            width: 100%;
-            height: 540px;
-            overflow: scroll;
-        }
-        #queryOutput {
-            margin-left: 40%;
-            border: 1px solid;
-            height: 625px;
-            overflow: scroll;
-        }
-        td {
-            border: 1px solid;
-        }
-        .label {
-            display: inline-block;
-            margin: 2px;
-        }
-        .insert {
-            background-color: aqua;
-        }
-        .delete {
-            background-color: rgb(255, 127, 127);
-        }
-        .update {
-            background-color: rgb(241, 191, 116);
-        }
-        .selection {
-            background-color: rgb(238, 255, 0);
-        }
-        .projection {
-            background-color: rgb(151, 243, 159);
-        }
-        .join {
-            background-color: rgb(105, 177, 236);
-        }
-        .aggregation {
-            background-color: rgb(58, 77, 250);
-        }
-        .nested_aggregation {
-            background-color: rgb(149, 49, 241);
-        }
-        .division {
-            background-color: rgb(240, 129, 188);
-        }
-    </style>
-    <body onload="renderFilters()">
-        <script type="text/javascript" src="client/lambertQueries.js"></script>
-        <script type="text/javascript" src="client/ryanQueries.js"></script>
-        <script type="text/javascript" src="client/jQueries.js"></script>
-        <script>
-            function extraQueries() {
-                var queries = [];
-                var xhttp = new XMLHttpRequest();
-                xhttp.onload = function() {
-                    if (this.status == 200) {
-                        var schema = JSON.parse(this.responseText);
-                        for (let table in schema) {
-                            var viewObj = {
-                                text: `Retrieve all from table ${table}`,
-                                apiName: `projectFrom`,
-                                inputs: {
-                                    attr: '*',
-                                    'table': table
-                                },
-                                categories: ['selection']
-                            };
-                            queries.push(viewObj);
-                            var insertObj = {
-                                text: `Insert new tuple into table ${table}`,
-                                apiName: `insertInto${table}`,
-                                userInputs: schema[table],
-                                categories: ['insert']
-                            };
-                            queries.push(insertObj);
-                            var updateObj = {
-                                text: `Update tuple in table ${table}`,
-                                apiName: `update${table}`,
-                                userInputs: [...schema[table], 'condition'],
-                                categories: ['update']
-                            };
-                            queries.push(updateObj);
-                            var deleteObj = {
-                                text: `Delete tuple from table ${table}`,
-                                apiName: `deleteFromWhere`,
-                                inputs: {
-                                    'table': table
-                                },
-                                userInputs: ['condition'],
-                                categories: ['delete']
-                            };
-                            queries.push(deleteObj);
-                        }
-                    }
-                };
-                xhttp.open("GET", "http://localhost:8080", false);
-                try {
-                    xhttp.send();
-                }
-                catch(err) {
-                    console.log('Server down.');
-                }
-                return queries;
-            }
+  <head>
+    <title>La Habana Fitness</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body onload="renderFilters()">
+    <!-- Page header -->
+    <h1>
+      La Habana Fitness
+    </h1>
 
-            function renderFilters() {
-                renderQueries();
-                var filtersContainer = document.getElementById('filters');
-                var title = document.createElement('h3');
-                title.innerText = 'Filters';
-                filtersContainer.appendChild(title);
-                filtersContainer.appendChild(document.createTextNode('Label: '));
-                var labelSelector = document.createElement('select');
-                labelSelector.id = 'labelSelector';
-                var option = document.createElement('option');
-                option.innerText = 'All';
-                option.setAttribute('value', '');
-                labelSelector.appendChild(option);
-                for (let label of ['insert', 'delete', 'update', 'selection', 'projection', 'join', 'aggregation', 'nested_aggregation', 'division']) {
-                    var option = document.createElement('option');
-                    option.innerText = label;
-                    option.setAttribute('value', label);
-                    labelSelector.appendChild(option);
-                }
-                filtersContainer.appendChild(labelSelector);
-                var labelSelectorButton = document.createElement('button');
-                labelSelectorButton.addEventListener('click', () => {
-                    renderQueries();
-                    var filterValue = document.getElementById('labelSelector').value;
-                    var buttonsContainer = document.getElementById('buttons');
-                    var newList = [];
-                    for (let queryContainer of buttonsContainer.childNodes) {
-                        if (queryContainer.tagName === 'HR') continue;
-                        if (queryContainer.id.includes(filterValue)) {
-                            newList.push(queryContainer);
-                        }
-                    }
-                    buttonsContainer.innerHTML = '';
-                    for (let queryContainer of newList) {
-                        buttonsContainer.appendChild(queryContainer);
-                        buttonsContainer.appendChild(document.createElement('hr'));
-                    }
-                });
-                labelSelectorButton.innerHTML = 'filter';
-                filtersContainer.appendChild(labelSelectorButton);
-                var hr = document.createElement('hr');
-                hr.setAttribute('style', "height:4px;background-color:purple")
-                filtersContainer.appendChild(hr);
-            }
+    <!-- Main content of the page -->
+    <div id="main_content">
+      <div id="panel">
+        <div id="filters"></div>
+        <div id="buttons"></div>
+      </div>
+      <div id="queryOutput"></div>
+    </div>
 
-            function renderQueries() {
-                var allQueries = [...lambertQ, ...ryanQ, ...jQ, ...extraQueries()];
-                var buttonsContainer = document.getElementById('buttons');
-                buttonsContainer.innerHTML = '';
-                for (let q of allQueries) {
-                    var apiName = q['apiName'];
-                    var userInputs = q['userInputs'];
-                    var categories = q['categories'];
-                    var queryContainer = document.createElement("div");
-                    queryContainer.id = String(categories);
-                    if (categories) {
-                        for (let category of categories) {
-                            var cgrLabel = document.createElement("div");
-                            cgrLabel.classList.add(category);
-                            cgrLabel.classList.add('label');
-                            cgrLabel.innerText = category + ' ';
-                            queryContainer.appendChild(cgrLabel);
-                        }
-                        queryContainer.appendChild(document.createElement('br'));
-                    }
-                    queryContainer.appendChild(document.createTextNode(q['text'] + ': '));
-                    var button = document.createElement('button');
-                    button.id = apiName;
-                    button.addEventListener('click', buttonHandler(q));
-                    button.innerHTML = 'Run';
-                    queryContainer.appendChild(button);
-                    if (userInputs) {
-                        queryContainer.appendChild(document.createElement('br'));
-                        for (let userInput of userInputs) {
-                            queryContainer.appendChild(document.createTextNode(userInput + ': '));
-                            var box = document.createElement('INPUT');
-                            box.setAttribute('type', 'text');
-                            box.id = q['text'].replace(/\s/g, '_') + '.' + userInput;
-                            queryContainer.appendChild(box);
-                            queryContainer.appendChild(document.createElement('br'));
-                        }
-                    }
-                    buttonsContainer.appendChild(queryContainer);
-                    buttonsContainer.appendChild(document.createElement('hr'));
-                }
+    <!-- JS script -->
+    <script type="text/javascript" src="client/lambertQueries.js"></script>
+    <script type="text/javascript" src="client/ryanQueries.js"></script>
+    <script type="text/javascript" src="client/jQueries.js"></script>
+    <script>
+      function extraQueries() {
+        var queries = [];
+        var xhttp = new XMLHttpRequest();
+        xhttp.onload = function () {
+          if (this.status == 200) {
+            var schema = JSON.parse(this.responseText);
+            for (let table in schema) {
+              var viewObj = {
+                text: `Retrieve all from table ${table}`,
+                apiName: `projectFrom`,
+                inputs: {
+                  attr: '*',
+                  table: table,
+                },
+                categories: ['selection'],
+              };
+              queries.push(viewObj);
+              var insertObj = {
+                text: `Insert new tuple into table ${table}`,
+                apiName: `insertInto${table}`,
+                userInputs: schema[table],
+                categories: ['insert'],
+              };
+              queries.push(insertObj);
+              var updateObj = {
+                text: `Update tuple in table ${table}`,
+                apiName: `update${table}`,
+                userInputs: [...schema[table], 'condition'],
+                categories: ['update'],
+              };
+              queries.push(updateObj);
+              var deleteObj = {
+                text: `Delete tuple from table ${table}`,
+                apiName: `deleteFromWhere`,
+                inputs: {
+                  table: table,
+                },
+                userInputs: ['condition'],
+                categories: ['delete'],
+              };
+              queries.push(deleteObj);
             }
+          }
+        };
+        xhttp.open('GET', 'http://localhost:8080', false);
+        try {
+          xhttp.send();
+        } catch (err) {
+          console.log('Server down.');
+        }
+        return queries;
+      }
 
-            function buttonHandler(q) {
-                var requestInputs = {};
-                var apiName = q['apiName'];
-                var inputs = q['inputs'];
-                var userInputs = q['userInputs'];
-                if (inputs) {
-                    requestInputs = inputs;
-                }
-                return () => {
-                    if (userInputs) {
-                        for (let userInput of userInputs) {
-                            var field = document.getElementById(q['text'].replace(/\s/g, '_') + '.' + userInput).value;
-                            requestInputs[userInput] = field;
-                        }
-                    }
-                    var xhttp = new XMLHttpRequest();
-                    xhttp.onreadystatechange = function() {
-                        if (this.readyState == 4 && this.status == 200) {
-                            try {
-                                console.log(JSON.parse(this.responseText));
-                                showTable(this.responseText);
-                            } catch {
-                                document.getElementById('queryOutput').textContent = 'Parsing error:\n' + this.responseText;
-                            }
-                        } else {
-                            document.getElementById('queryOutput').textContent = 'Bad status:\n' + this.responseText;
-                        }
-                    };
-                    xhttp.open("POST", "http://localhost:8080", true);
-                    xhttp.setRequestHeader("Content-Type", "application/json");
-                    xhttp.send(JSON.stringify({"apiName": apiName, "inputs": requestInputs}));
-                }
+      function renderFilters() {
+        renderQueries();
+        var filtersContainer = document.getElementById('filters');
+        var title = document.createElement('h3');
+        title.innerText = 'Filters';
+        filtersContainer.appendChild(title);
+        filtersContainer.appendChild(document.createTextNode('Label: '));
+        var labelSelector = document.createElement('select');
+        labelSelector.id = 'labelSelector';
+        var option = document.createElement('option');
+        option.innerText = 'All';
+        option.setAttribute('value', '');
+        labelSelector.appendChild(option);
+        for (let label of [
+          'insert',
+          'delete',
+          'update',
+          'selection',
+          'projection',
+          'join',
+          'aggregation',
+          'nested_aggregation',
+          'division',
+        ]) {
+          var option = document.createElement('option');
+          option.innerText = label;
+          option.setAttribute('value', label);
+          labelSelector.appendChild(option);
+        }
+        filtersContainer.appendChild(labelSelector);
+        var labelSelectorButton = document.createElement('button');
+        labelSelectorButton.addEventListener('click', () => {
+          renderQueries();
+          var filterValue = document.getElementById('labelSelector').value;
+          var buttonsContainer = document.getElementById('buttons');
+          var newList = [];
+          for (let queryContainer of buttonsContainer.childNodes) {
+            if (queryContainer.tagName === 'HR') continue;
+            if (queryContainer.id.includes(filterValue)) {
+              newList.push(queryContainer);
             }
+          }
+          buttonsContainer.innerHTML = '';
+          for (let queryContainer of newList) {
+            buttonsContainer.appendChild(queryContainer);
+            buttonsContainer.appendChild(document.createElement('hr'));
+          }
+        });
+        labelSelectorButton.innerHTML = 'FILTER';
+        labelSelectorButton.setAttribute(
+          'style',
+          'margin-left: 6px; color: blue;'
+        );
+        filtersContainer.appendChild(labelSelectorButton);
+        var hr = document.createElement('hr');
+        hr.setAttribute('style', 'height:4px;background-color:purple;');
+        filtersContainer.appendChild(hr);
+      }
 
-            function showTable(res) {
-                var resArr = JSON.parse(res);
-                if (!Array.isArray(resArr)) {
-                    if (resArr['sqlMessage']) {
-                        document.getElementById('queryOutput').textContent = 'SQL msg:\n' + resArr['sqlMessage'];
-                    } else {
-                        document.getElementById('queryOutput').textContent = 'Done.';
-                    }
-                    return;
-                }
-                if (resArr.length === 0) {
-                    document.getElementById('queryOutput').textContent = 'No result';
-                    return;
-                }
-                var table = document.createElement('TABLE');
-                var titleRow = document.createElement('TR');
-                for (let col in resArr[0]) {
-                    var cell = document.createElement('TD');
-                    cell.appendChild(document.createTextNode(col));
-                    titleRow.appendChild(cell);
-                }
-                table.appendChild(titleRow);
-                for (let resRow of resArr) {
-                    var tableRow = document.createElement('TR');
-                    for (let resCell in resRow) {
-                        var tableCell = document.createElement('TD');
-                        tableCell.appendChild(document.createTextNode(resRow[resCell]));
-                        tableRow.appendChild(tableCell);
-                    }
-                    table.appendChild(tableRow);
-                }
-                document.getElementById('queryOutput').textContent = '';
-                document.getElementById('queryOutput').appendChild(table);
+      function renderQueries() {
+        var allQueries = [...lambertQ, ...ryanQ, ...jQ, ...extraQueries()];
+        var buttonsContainer = document.getElementById('buttons');
+        buttonsContainer.innerHTML = '';
+        for (let q of allQueries) {
+          var apiName = q['apiName'];
+          var userInputs = q['userInputs'];
+          var categories = q['categories'];
+          var queryContainer = document.createElement('div');
+          queryContainer.id = String(categories);
+          if (categories) {
+            for (let category of categories) {
+              var cgrLabel = document.createElement('div');
+              cgrLabel.classList.add(category);
+              cgrLabel.classList.add('label');
+              cgrLabel.innerText = category + ' ';
+              queryContainer.appendChild(cgrLabel);
             }
-        </script>
-        <h1>La Habana Fitness</h1>
-        <div id='body'>
-            <div id="panel">
-                <div id="filters"></div>
-                <div id="buttons"></div>
-            </div>
-            <div id="queryOutput"></div>
-        </div>
-    </body>
+            queryContainer.appendChild(document.createElement('br'));
+          }
+          queryContainer.appendChild(document.createTextNode(q['text'] + ': '));
+          var button = document.createElement('button');
+          button.id = apiName;
+          button.addEventListener('click', buttonHandler(q));
+          button.innerHTML = 'RUN';
+          button.setAttribute('style', 'color: blue;');
+          queryContainer.appendChild(button);
+          if (userInputs) {
+            queryContainer.appendChild(document.createElement('br'));
+            for (let userInput of userInputs) {
+              queryContainer.appendChild(
+                document.createTextNode(userInput + ': ')
+              );
+              var box = document.createElement('INPUT');
+              box.setAttribute('type', 'text');
+              box.id = q['text'].replace(/\s/g, '_') + '.' + userInput;
+              queryContainer.appendChild(box);
+              queryContainer.appendChild(document.createElement('br'));
+            }
+          }
+          buttonsContainer.appendChild(queryContainer);
+          buttonsContainer.appendChild(document.createElement('hr'));
+        }
+      }
+
+      function buttonHandler(q) {
+        var requestInputs = {};
+        var apiName = q['apiName'];
+        var inputs = q['inputs'];
+        var userInputs = q['userInputs'];
+        if (inputs) {
+          requestInputs = inputs;
+        }
+        return () => {
+          if (userInputs) {
+            for (let userInput of userInputs) {
+              var field = document.getElementById(
+                q['text'].replace(/\s/g, '_') + '.' + userInput
+              ).value;
+              requestInputs[userInput] = field;
+            }
+          }
+          var xhttp = new XMLHttpRequest();
+          xhttp.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) {
+              try {
+                console.log(JSON.parse(this.responseText));
+                showTable(this.responseText);
+              } catch {
+                document.getElementById('queryOutput').textContent =
+                  'Parsing error:\n' + this.responseText;
+              }
+            } else {
+              document.getElementById('queryOutput').textContent =
+                'Bad status:\n' + this.responseText;
+            }
+          };
+          xhttp.open('POST', 'http://localhost:8080', true);
+          xhttp.setRequestHeader('Content-Type', 'application/json');
+          xhttp.send(
+            JSON.stringify({ apiName: apiName, inputs: requestInputs })
+          );
+        };
+      }
+
+      function showTable(res) {
+        var resArr = JSON.parse(res);
+        if (!Array.isArray(resArr)) {
+          if (resArr['sqlMessage']) {
+            document.getElementById('queryOutput').textContent =
+              'SQL msg:\n' + resArr['sqlMessage'];
+          } else {
+            document.getElementById('queryOutput').textContent = 'Done.';
+          }
+          return;
+        }
+        if (resArr.length === 0) {
+          document.getElementById('queryOutput').textContent = 'No result';
+          return;
+        }
+        var table = document.createElement('TABLE');
+        var titleRow = document.createElement('TR');
+        for (let col in resArr[0]) {
+          var cell = document.createElement('TD');
+          cell.appendChild(document.createTextNode(col));
+          titleRow.appendChild(cell);
+        }
+        table.appendChild(titleRow);
+        for (let resRow of resArr) {
+          var tableRow = document.createElement('TR');
+          for (let resCell in resRow) {
+            var tableCell = document.createElement('TD');
+            tableCell.appendChild(document.createTextNode(resRow[resCell]));
+            tableRow.appendChild(tableCell);
+          }
+          table.appendChild(tableRow);
+        }
+        document.getElementById('queryOutput').textContent = '';
+        document.getElementById('queryOutput').appendChild(table);
+      }
+    </script>
+  </body>
 </html>

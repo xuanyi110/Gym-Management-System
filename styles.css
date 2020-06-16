@@ -1,0 +1,72 @@
+body {
+  background-image: url('https://images.dailyhive.com/20200609094309/DH-GYM.jpg');
+  opacity: 95%;
+}
+h1 {
+  color: rgb(226, 223, 247);
+  text-align: center;
+  font-size: 40px;
+}
+#main_content {
+  width: 100%;
+  background-color: antiquewhite;
+}
+#panel {
+  width: 40%;
+  height: 625px;
+  float: left;
+}
+h3 {
+  margin-top: 0px;
+}
+#filters {
+  width: 100%;
+  height: 85px;
+}
+#buttons {
+  width: 100%;
+  height: 540px;
+  overflow: scroll;
+}
+#queryOutput {
+  margin-left: 40%;
+  border: 1px solid;
+  height: 625px;
+  overflow: scroll;
+  background-color: rgb(223, 219, 219);
+}
+td {
+  border: 1px solid;
+}
+
+.label {
+  display: inline-block;
+  margin: 2px;
+}
+.insert {
+  background-color: aqua;
+}
+.delete {
+  background-color: rgb(255, 127, 127);
+}
+.update {
+  background-color: rgb(241, 191, 116);
+}
+.selection {
+  background-color: rgb(238, 255, 0);
+}
+.projection {
+  background-color: rgb(151, 243, 159);
+}
+.join {
+  background-color: rgb(248, 95, 179);
+}
+.aggregation {
+  background-color: rgb(142, 152, 241);
+}
+.nested_aggregation {
+  background-color: rgb(194, 191, 197);
+}
+.division {
+  background-color: rgb(240, 129, 188);
+}
