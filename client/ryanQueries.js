@@ -1,7 +1,7 @@
 const ryanQ = [
   // Get cleaning history(area) of a certain area
   {
-    text: 'Get cleaning history by area ID',
+    text: 'Get cleaning history by area ID (Valid input: 1; 2; 3)',
     apiName: 'getCleanHistory',
     inputs: {
       content: ['areaID'],
@@ -74,5 +74,15 @@ const ryanQ = [
       content: ['table_name'],
     },
     userInputs: ['table_name'],
+  },
+  // Calculate the average salary of staff based on gender
+  {
+    text: 'Calculate the average salary of staff based on gender',
+    apiName: 'getAvgSalaryByGender',
+    categories: ['selection', 'nested_aggregation'],
+    inputs: {
+      content: ['gender'],
+    },
+    userInputs: ['gender'],
   },
 ];
