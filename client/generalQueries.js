@@ -6,15 +6,9 @@ var generalQ = [
         categories: ['projection']
     },
     {
-        text: 'GENERAL - Project with conditions',
+        text: 'GENERAL - Project (and/or join) with conditions',
         apiName: "projectFromWhere",
-        userInputs: ['attr', 'table', 'condition'],
-        categories: ['selection', 'projection']
-    },
-    {
-        text: 'GENERAL - Join with conditions',
-        apiName: "joinWhere",
         userInputs: ['attr', 'tables', 'condition'],
-        categories: ['join', 'projection']
+        categories: ['selection', 'join', 'projection']
     },
 ]
