@@ -20,6 +20,7 @@
     </div>
 
     <!-- JS script -->
+    <script type="text/javascript" src="client/generalQueries.js"></script>
     <script type="text/javascript" src="client/lambertQueries.js"></script>
     <script type="text/javascript" src="client/ryanQueries.js"></script>
     <script type="text/javascript" src="client/jQueries.js"></script>
@@ -137,7 +138,7 @@
       }
 
       function renderQueries() {
-        var allQueries = [...lambertQ, ...ryanQ, ...jQ, ...extraQueries()];
+        var allQueries = [...generalQ, ...lambertQ, ...ryanQ, ...jQ, ...extraQueries()];
         var buttonsContainer = document.getElementById('buttons');
         buttonsContainer.innerHTML = '';
         for (let q of allQueries) {
