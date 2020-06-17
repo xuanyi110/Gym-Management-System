@@ -53,12 +53,12 @@ var lambertQ = [
         categories: ['selection']
     },
     {
-        text: 'get all occupied lockers info with its customer names',
+        text: 'get customers who have the same id with locker or customers and the lockers they reserved. (Valid input: id, customer_id)',
         apiName: "getLockerwithCustomer",
         inputs: {
         },
-        userInputs: [],
-        categories: ['selection']
+        userInputs: ['property'],
+        categories: ['join']
     },
     {
         text: 'get customer information and course information based on given gym session id. (Valid input: 1; 2; 3; 4; 5)',
@@ -69,11 +69,11 @@ var lambertQ = [
         categories: ['selection']
     },
     {
-        text: 'get total calories in a meal plan by meal plan ID. (Valid input: 1; 2; 3; 4; 5)',
-        apiName: "getCalByMealPlan",
+        text: 'get total property in a meal plan by meal plan ID. (Meal_plan_id: 1; 2; 3; 4; 5. property: fat; carbs; protein; calories)',
+        apiName: "getProByMealPlan",
         inputs: {
         },
-        userInputs: ['meal_plan_ID'],
+        userInputs: ['meal_plan_ID', 'property'],
         categories: ['nested_aggregation']
     },
     {
@@ -83,5 +83,21 @@ var lambertQ = [
         },
         userInputs: ['areaID'],
         categories: ['aggregation']
+    },
+    {
+        text: 'get average value of food properties (Valid input: fat; carbs; protein; calories)',
+        apiName: "getAvgInFI",
+        inputs: {
+        },
+        userInputs: ['property'],
+        categories: ['aggregation']
+    },
+    {
+        text: 'get all food properties based on users interest (Valid input: fat; carbs; protein; calories)',
+        apiName: "getPropertyInFI",
+        inputs: {
+        },
+        userInputs: ['property'],
+        categories: ['projection']
     }
 ];
