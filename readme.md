@@ -12,9 +12,7 @@ The project uses MySQL as the DBMS and NodeJS as the backend; in the same time, 
 
 1. Node https://nodejs.org/en/download/ OR Yarn https://yarnpkg.com/lang/en/docs/install/#windows-stable
 
-2. Install all the project dependencies by executing `yarn` or `npm install` on the command line.
-
-3. Install MySQL: https://www.mysql.com/downloads/
+2. Install MySQL: https://www.mysql.com/downloads/
 
 ## Run the application
 
