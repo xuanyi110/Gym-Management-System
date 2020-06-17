@@ -9,6 +9,8 @@
     <h1>
       La Habana Fitness
     </h1>
+    <button id='showSchema'>SHOW SCHEMA REFERENCE</button>
+    <div id='schema' class="hide"></div>
 
     <!-- Main content of the page -->
     <div id="main_content">
@@ -25,12 +27,20 @@
     <script type="text/javascript" src="client/ryanQueries.js"></script>
     <script type="text/javascript" src="client/jQueries.js"></script>
     <script>
+        function equalConditions(tableSchema) {
+            rtn = [];
+            for (let i of tableSchema) {
+                rtn.push('condition_' + i + '_equals');
+            }
+            return rtn;
+        }
       function extraQueries() {
         var queries = [];
         var xhttp = new XMLHttpRequest();
         xhttp.onload = function () {
           if (this.status == 200) {
             var schema = JSON.parse(this.responseText);
+            printSchema(schema);
             for (let table in schema) {
               var viewObj = {
                 text: `Retrieve all from table ${table}`,
@@ -52,17 +62,17 @@
               var updateObj = {
                 text: `Update tuple in table ${table}`,
                 apiName: `update${table}`,
-                userInputs: [...schema[table], 'condition'],
+                userInputs: [...schema[table], ...equalConditions(schema[table])],
                 categories: ['update'],
               };
               queries.push(updateObj);
               var deleteObj = {
                 text: `Delete tuple from table ${table}`,
-                apiName: `deleteFromWhere`,
+                apiName: `deleteFrom${table}`,
                 inputs: {
                   table: table,
                 },
-                userInputs: ['condition'],
+                userInputs: equalConditions(schema[table]),
                 categories: ['delete'],
               };
               queries.push(deleteObj);
@@ -110,15 +120,19 @@
         filtersContainer.appendChild(labelSelector);
         var labelSelectorButton = document.createElement('button');
         labelSelectorButton.addEventListener('click', () => {
-          renderQueries();
-          var filterValue = document.getElementById('labelSelector').value;
-          var buttonsContainer = document.getElementById('buttons');
-          var newList = [];
-          for (let queryContainer of buttonsContainer.childNodes) {
-            if (queryContainer.tagName === 'HR') continue;
-            if (queryContainer.id.includes(filterValue)) {
-              newList.push(queryContainer);
-            }
+            renderQueries();
+            var filterValue = document.getElementById('labelSelector').value;
+            var buttonsContainer = document.getElementById('buttons');
+            var newList = [];
+            for (let queryContainer of buttonsContainer.childNodes) {
+                if (queryContainer.tagName === 'HR') continue;
+                var qLabels = queryContainer.id;
+                if (filterValue === 'aggregation') {
+                    qLabels = qLabels.replace('nested_aggregation', '');
+                }
+                if (qLabels.includes(filterValue)) {
+                    newList.push(queryContainer);
+                }
           }
           buttonsContainer.innerHTML = '';
           for (let queryContainer of newList) {
@@ -137,13 +151,37 @@
         filtersContainer.appendChild(hr);
       }
 
+        function printSchema(schema) {
+            schemaContainer = document.getElementById('schema');
+            for (let table in schema) {
+                var p = document.createElement('p');
+                p.className = 'schemaRow';
+                p.innerText = table + ': ' + schema[table].join(', ');
+                schemaContainer.appendChild(p);
+                schemaContainer.appendChild(document.createElement('hr'));
+            }
+        }
+
       function renderQueries() {
+          var schema = document.getElementById('schema');
+          var schemaButton = document.getElementById('showSchema');
+          schemaButton.addEventListener('click', () => {
+              if (schema.className.includes('show')) {
+                schema.classList.remove('show');
+                schema.className = 'hide';
+              } else if (schema.className.includes('hide')) {
+                schema.classList.remove('hide');
+                schema.className = 'show';
+              } else {
+                schema.className = 'hide';
+              }
+          });
         var allQueries = [
-          ...lambertQ,
-          ...generalQ,
-          ...ryanQ,
-          ...jQ,
-          ...extraQueries(),
+            ...generalQ,
+            ...lambertQ,
+            ...ryanQ,
+            ...jQ,
+            ...extraQueries(),
         ];
         var buttonsContainer = document.getElementById('buttons');
         buttonsContainer.innerHTML = '';

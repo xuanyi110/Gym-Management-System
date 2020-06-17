@@ -6,6 +6,38 @@ h1 {
   color: rgb(249, 249, 250);
   text-align: center;
   font-size: 50px;
+  margin-top: 20px;
+  margin-bottom: 10px;
+}
+#showSchema {
+  width: 120px;
+  padding: 7px;
+  color: mediumpurple;
+  font-size: 80%;
+}
+#schema {
+  position: absolute;
+  z-index: 20;
+  background-color: rgb(250, 229, 196);
+  right: 0;
+  top: 0;
+  margin-right: 15px;
+  margin-top: 15px;
+  border-radius: 6px;
+  width: 600px;
+  height: 600px;
+  overflow: scroll;
+  padding: 5px;
+}
+.schemaRow {
+  margin-top: 0px;
+  margin-bottom: 0px;
+}
+.show {
+  display: block;
+}
+.hide {
+  display: none;
 }
 #main_content {
   width: 100%;
