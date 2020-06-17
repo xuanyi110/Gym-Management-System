@@ -138,7 +138,13 @@
       }
 
       function renderQueries() {
-        var allQueries = [...generalQ, ...lambertQ, ...ryanQ, ...jQ, ...extraQueries()];
+        var allQueries = [
+          ...lambertQ,
+          ...generalQ,
+          ...ryanQ,
+          ...jQ,
+          ...extraQueries(),
+        ];
         var buttonsContainer = document.getElementById('buttons');
         buttonsContainer.innerHTML = '';
         for (let q of allQueries) {
@@ -226,26 +232,30 @@
         var resArr = JSON.parse(res);
         var queryRequestContainer = document.createElement('p');
         if (!Array.isArray(resArr)) {
-            var msgContainer = document.createElement('p');
-            queryRequestContainer.innerText = 'Query: ' + resArr['queryRequest'];
-            if (resArr['sqlMessage']) {
-                msgContainer.innerText = 'SQL msg:\n' + resArr['sqlMessage'];
-            } else {
-                msgContainer.innerText = 'Done.';
-            }
-            document.getElementById('queryOutput').textContent = '';
-            document.getElementById('queryOutput').appendChild(queryRequestContainer);
-            document.getElementById('queryOutput').appendChild(msgContainer);
-            return;
+          var msgContainer = document.createElement('p');
+          queryRequestContainer.innerText = 'Query: ' + resArr['queryRequest'];
+          if (resArr['sqlMessage']) {
+            msgContainer.innerText = 'SQL msg:\n' + resArr['sqlMessage'];
+          } else {
+            msgContainer.innerText = 'Done.';
+          }
+          document.getElementById('queryOutput').textContent = '';
+          document
+            .getElementById('queryOutput')
+            .appendChild(queryRequestContainer);
+          document.getElementById('queryOutput').appendChild(msgContainer);
+          return;
         }
         document.getElementById('queryOutput').textContent = '';
         queryRequestContainer.innerText = 'Query: ' + resArr.pop();
-        document.getElementById('queryOutput').appendChild(queryRequestContainer);
+        document
+          .getElementById('queryOutput')
+          .appendChild(queryRequestContainer);
         if (resArr.length === 0) {
-            var msgContainer = document.createElement('p');
-            msgContainer.innerText = 'No result';
-            document.getElementById('queryOutput').appendChild(msgContainer);
-            return;
+          var msgContainer = document.createElement('p');
+          msgContainer.innerText = 'No result';
+          document.getElementById('queryOutput').appendChild(msgContainer);
+          return;
         }
         var table = document.createElement('TABLE');
         var titleRow = document.createElement('TR');
