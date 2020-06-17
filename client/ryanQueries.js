@@ -6,14 +6,14 @@ const ryanQ = [
     inputs: {
       content: ['areaID'],
     },
-    categories: ['selection', 'projection'],
+    categories: ['selection'],
     userInputs: ['areaID'],
   },
   // Get all the reserved lockers
   {
     text: 'Get all reserved lockers',
     apiName: 'getReservedLockers',
-    categories: ['selection', 'projection'],
+    categories: [],
   },
   // Get courses in a certain area
   {

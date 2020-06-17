@@ -38,6 +38,6 @@ var jQ = [
             attr: 'COUNT(*) number_of_tuples'
         },
         userInputs: ['table'],
-        categories: ['selection', 'projection']
+        categories: ['selection']
     },
 ];
