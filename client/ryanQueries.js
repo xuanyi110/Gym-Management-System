@@ -23,7 +23,7 @@ const ryanQ = [
       content: ['areaID'],
     },
     userInputs: ['areaID'],
-    categories: ['selection', 'projection'],
+    categories: ['selection'],
   },
   // Get courses registered by customer
   {
@@ -33,7 +33,7 @@ const ryanQ = [
       content: ['cust_id'],
     },
     userInputs: ['cust_id'],
-    categories: ['selection', 'projection'],
+    categories: ['selection'],
   },
   // Get customers who registered the course session
   {
@@ -44,7 +44,7 @@ const ryanQ = [
       content: ['session_number'],
     },
     userInputs: ['session_number'],
-    categories: ['selection', 'projection'],
+    categories: ['selection'],
   },
   // Get membership of a customer
   {
@@ -55,7 +55,7 @@ const ryanQ = [
       content: ['cust_id'],
     },
     userInputs: ['cust_id'],
-    categories: ['selection', 'projection'],
+    categories: ['selection'],
   },
   // Get coach info of a specific customer
   {
@@ -65,7 +65,7 @@ const ryanQ = [
       content: ['cust_id'],
     },
     userInputs: ['cust_id'],
-    categories: ['selection', 'projection'],
+    categories: ['selection'],
   },
   // Get the number of tuples for each table
   {
