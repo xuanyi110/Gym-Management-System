@@ -22,11 +22,25 @@
     </div>
 
     <!-- JS script -->
-    <script type="text/javascript" src="client/generalQueries.js"></script>
-    <script type="text/javascript" src="client/lambertQueries.js"></script>
-    <script type="text/javascript" src="client/ryanQueries.js"></script>
-    <script type="text/javascript" src="client/jQueries.js"></script>
+    <script type="text/javascript" src="generalQueries.js"></script>
+    <script type="text/javascript" src="lambertQueries.js"></script>
+    <script type="text/javascript" src="ryanQueries.js"></script>
+    <script type="text/javascript" src="jQueries.js"></script>
     <script>
+        var schemaRes = {};
+        var schemaXhttp = new XMLHttpRequest();
+        schemaXhttp.onload = function () {
+          if (this.status == 200) {
+            schemaRes = JSON.parse(this.responseText);
+          }
+        }
+        schemaXhttp.open('GET', 'http://localhost:8080/schema', false);
+        try {
+          schemaXhttp.send();
+        } catch (err) {
+          console.log('Server down.');
+        }
+
         function equalConditions(tableSchema) {
             rtn = [];
             for (let i of tableSchema) {
@@ -36,54 +50,42 @@
         }
       function extraQueries() {
         var queries = [];
-        var xhttp = new XMLHttpRequest();
-        xhttp.onload = function () {
-          if (this.status == 200) {
-            var schema = JSON.parse(this.responseText);
-            printSchema(schema);
-            for (let table in schema) {
-              var viewObj = {
-                text: `Retrieve all from table ${table}`,
-                apiName: `projectFrom`,
-                inputs: {
-                  attr: '*',
-                  table: table,
-                },
-                categories: ['selection'],
-              };
-              queries.push(viewObj);
-              var insertObj = {
-                text: `Insert new tuple into table ${table}`,
-                apiName: `insertInto${table}`,
-                userInputs: schema[table],
-                categories: ['insert'],
-              };
-              queries.push(insertObj);
-              var updateObj = {
-                text: `Update tuple in table ${table}`,
-                apiName: `update${table}`,
-                userInputs: [...schema[table], ...equalConditions(schema[table])],
-                categories: ['update'],
-              };
-              queries.push(updateObj);
-              var deleteObj = {
-                text: `Delete tuple from table ${table}`,
-                apiName: `deleteFrom${table}`,
-                inputs: {
-                  table: table,
-                },
-                userInputs: equalConditions(schema[table]),
-                categories: ['delete'],
-              };
-              queries.push(deleteObj);
-            }
-          }
-        };
-        xhttp.open('GET', 'http://localhost:8080', false);
-        try {
-          xhttp.send();
-        } catch (err) {
-          console.log('Server down.');
+        printSchema(schemaRes);
+        for (let table in schemaRes) {
+          var viewObj = {
+            text: `Retrieve all from table ${table}`,
+            apiName: `projectFrom`,
+            inputs: {
+              attr: '*',
+              table: table,
+            },
+            categories: ['selection'],
+          };
+          queries.push(viewObj);
+          var insertObj = {
+            text: `Insert new tuple into table ${table}`,
+            apiName: `insertInto${table}`,
+            userInputs: schemaRes[table],
+            categories: ['insert'],
+          };
+          queries.push(insertObj);
+          var updateObj = {
+            text: `Update tuple in table ${table}`,
+            apiName: `update${table}`,
+            userInputs: [...schemaRes[table], ...equalConditions(schemaRes[table])],
+            categories: ['update'],
+          };
+          queries.push(updateObj);
+          var deleteObj = {
+            text: `Delete tuple from table ${table}`,
+            apiName: `deleteFrom${table}`,
+            inputs: {
+              table: table,
+            },
+            userInputs: equalConditions(schemaRes[table]),
+            categories: ['delete'],
+          };
+          queries.push(deleteObj);
         }
         return queries;
       }

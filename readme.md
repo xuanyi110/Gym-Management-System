@@ -26,7 +26,7 @@ The project uses MySQL as the DBMS and NodeJS as the backend; in the same time, 
     npm run build
     ```
 
-4. Open the `home.html` file in the repo by broswer and you are all set!
+4. Open the [web page](http://localhost:8080/client/home.html) and you are all set!
 
 
 ## Copyright ©
