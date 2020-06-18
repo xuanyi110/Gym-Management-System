@@ -185,6 +185,7 @@
         ];
         var buttonsContainer = document.getElementById('buttons');
         buttonsContainer.innerHTML = '';
+        joinCustomerWithStaff(buttonsContainer);
         for (let q of allQueries) {
           var apiName = q['apiName'];
           var userInputs = q['userInputs'];
@@ -225,6 +226,49 @@
           buttonsContainer.appendChild(document.createElement('hr'));
         }
       }
+
+        function joinCustomerWithStaff(parent) {
+            var queryContainer = document.createElement('div');
+            var categories = ['join', 'selection'];
+            queryContainer.id = String(categories);
+            for (let category of categories) {
+                var cgrLabel = document.createElement('div');
+                cgrLabel.classList.add(category);
+                cgrLabel.classList.add('label');
+                cgrLabel.innerText = category + ' ';
+                queryContainer.appendChild(cgrLabel);
+            }
+            queryContainer.appendChild(document.createElement('br'));
+
+            queryContainer.appendChild(document.createTextNode('Find which customer and staff have something in common'));
+            queryContainer.appendChild(document.createElement('br'));
+            attrMap = {
+                'LAST_NAME': 'LASTNAME',
+                'ADDR': 'ADDRESS',
+                'DOB': 'DOB',
+                'POSTAL_CODE': 'POSTAL_CODE'
+            };
+            for (let c_attr in attrMap) {
+                var button = document.createElement('button');
+                button.addEventListener('click', joinCustomerWithStaffButtonHandler(c_attr, attrMap[c_attr]));
+                button.innerText = c_attr;
+                button.setAttribute('style', 'width: 100px');
+                queryContainer.appendChild(button);
+                queryContainer.appendChild(document.createElement('br'));
+            }
+            parent.appendChild(queryContainer);
+            parent.appendChild(document.createElement('hr'));
+        }
+
+        function joinCustomerWithStaffButtonHandler(c_attr, s_attr) {
+            return buttonHandler({
+                apiName: 'joinStaffWithCustomer',
+                inputs: {
+                    'c_attr': c_attr,
+                    's_attr': s_attr
+                }
+            });
+        }
 
       function buttonHandler(q) {
         var requestInputs = {};
