@@ -53,14 +53,6 @@ var lambertQ = [
   },
   {
     text:
-      'get customers who have the same id with locker or customers and the lockers they reserved. (Valid input: id, customer_id)',
-    apiName: 'getLockerwithCustomer',
-    inputs: {},
-    userInputs: ['property'],
-    categories: ['join'],
-  },
-  {
-    text:
       'get customer information and course information based on given gym session id. (Valid input: 1; 2; 3; 4; 5)',
     apiName: 'getCustSameSession',
     inputs: {},
