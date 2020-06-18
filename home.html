@@ -89,6 +89,9 @@
       }
 
       function renderFilters() {
+        var schema = document.getElementById('schema');
+        var schemaButton = document.getElementById('showSchema');
+        schemaButton.addEventListener('click', schemaButtonHandler(schema));
         renderQueries();
         var filtersContainer = document.getElementById('filters');
         var title = document.createElement('h3');
@@ -153,6 +156,7 @@
 
         function printSchema(schema) {
             schemaContainer = document.getElementById('schema');
+            schemaContainer.innerText = '';
             for (let table in schema) {
                 var p = document.createElement('p');
                 p.className = 'schemaRow';
@@ -161,21 +165,22 @@
                 schemaContainer.appendChild(document.createElement('hr'));
             }
         }
+        
+        function schemaButtonHandler(schema) {
+            return () => {
+                if (schema.className.includes('show')) {
+                    schema.classList.remove('show');
+                    schema.className = 'hide';
+                } else if (schema.className.includes('hide')) {
+                    schema.classList.remove('hide');
+                    schema.className = 'show';
+                } else {
+                    schema.className = 'hide';
+                }
+            };
+        }
 
       function renderQueries() {
-          var schema = document.getElementById('schema');
-          var schemaButton = document.getElementById('showSchema');
-          schemaButton.addEventListener('click', () => {
-              if (schema.className.includes('show')) {
-                schema.classList.remove('show');
-                schema.className = 'hide';
-              } else if (schema.className.includes('hide')) {
-                schema.classList.remove('hide');
-                schema.className = 'show';
-              } else {
-                schema.className = 'hide';
-              }
-          });
         var allQueries = [
             ...generalQ,
             ...lambertQ,
